@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle vente</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+        .navbar { background: #2c3e50; color: white; padding: 15px 30px; }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; }
+        .container { padding: 30px; max-width: 600px; }
+        h1 { color: #2c3e50; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #2c3e50; font-weight: bold; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        .btn { background: #2c3e50; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; width: 100%; }
+        .btn:hover { background: #34495e; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <strong>🛒 Mon Commerce</strong>
+        <a href="/">Tableau de bord</a>
+        <a href="/ventes">Ventes</a>
+        <a href="/articles">Articles</a>
+        <a href="/nouvelle_vente">Nouvelle vente</a>
+    </div>
+    <div class="container">
+        <h1>Nouvelle vente</h1>
+        <div class="card">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Nom du client</label>
+                    <input type="text" name="nom_client" required placeholder="Ex: Koné">
+                </div>
+                <div class="form-group">
+                    <label>Prénom du client</label>
+                    <input type="text" name="prenom_client" placeholder="Ex: Mamadou">
+                </div>
+                <div class="form-group">
+                    <label>Numéro du client</label>
+                    <input type="text" name="numero_client" placeholder="Ex: 0701020304">
+                </div>
+                <div class="form-group">
+                    <label>Article</label>
+                    <select name="num_art" required>
+                        <option value="">-- Choisir un article --</option>
+                        {% for a in articles %}
+                        <option value="{{ a[0] }}">{{ a[1] }} - {{ a[7] }} F (stock: {{ a[5] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantité</label>
+                    <input type="number" name="quantite" min="1" required placeholder="Ex: 2">
+                </div>
+                <button type="submit" class="btn">Enregistrer la vente</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des articles</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+        .navbar { background: #2c3e50; color: white; padding: 15px 30px; }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; }
+        .container { padding: 30px; }
+        table { width: 100%; background: white; border-collapse: collapse; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th { background: #2c3e50; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        h1 { color: #2c3e50; }
+        .stock-ok { color: green; font-weight: bold; }
+        .stock-low { color: orange; font-weight: bold; }
+        .stock-empty { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <strong>🛒 Mon Commerce</strong>
+        <a href="/">Tableau de bord</a>
+        <a href="/ventes">Ventes</a>
+        <a href="/articles">Articles</a>
+        <a href="/nouvelle_vente">Nouvelle vente</a>
+    </div>
+    <div class="container">
+        <h1>Liste des articles</h1>
+        <table>
+            <tr>
+                <th>N°</th>
+                <th>Nom</th>
+                <th>Pointure</th>
+                <th>Couleur</th>
+                <th>Type</th>
+                <th>Marque</th>
+                <th>Prix de base</th>
+                <th>Stock</th>
+            </tr>
+            {% for a in articles %}
+            <tr>
+                <td>{{ a[0] }}</td>
+                <td>{{ a[1] }}</td>
+                <td>{{ a[2] }}</td>
+                <td>{{ a[3] }}</td>
+                <td>{{ a[4] }}</td>
+                <td>{{ a[6] }}</td>
+                <td>{{ a[7] }} F</td>
+                <td class="{% if a[5] == 0 %}stock-empty{% elif a[5] < 10 %}stock-low{% else %}stock-ok{% endif %}">
+                    {{ a[5] }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

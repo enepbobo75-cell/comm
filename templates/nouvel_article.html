@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvel article</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white; padding: 15px 30px;
+            display: flex; align-items: center; gap: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .navbar strong { font-size: 1.2em; margin-right: 20px; }
+        .navbar a { color: #a0c4ff; text-decoration: none; font-size: 0.95em; }
+        .navbar a:hover { color: white; }
+        .container { padding: 30px; max-width: 600px; }
+        h1 { color: #1a1a2e; margin-bottom: 25px; }
+        .card { background: white; padding: 30px; border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; color: #555; font-weight: bold; font-size: 0.9em; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd;
+                        border-radius: 8px; font-size: 0.95em; }
+        input:focus { outline: none; border-color: #4361ee; }
+        .btn { background: #4361ee; color: white; padding: 12px 30px;
+               border: none; border-radius: 8px; font-size: 1em;
+               cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn:hover { background: #3451d1; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <strong>🛒 Mon Commerce</strong>
+        <a href="/">📊 Tableau de bord</a>
+        <a href="/ventes">🧾 Ventes</a>
+        <a href="/articles">📦 Articles</a>
+        <a href="/nouvelle_vente">➕ Nouvelle vente</a>
+        <a href="/nouvel_article">➕ Nouvel article</a>
+    </div>
+    <div class="container">
+        <h1>📦 Nouvel article</h1>
+        <div class="card">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Nom de l'article</label>
+                    <input type="text" name="nom" required placeholder="Ex: Chaussure sport">
+                </div>
+                <div class="form-group">
+                    <label>Pointure</label>
+                    <input type="text" name="pointure" placeholder="Ex: 42">
+                </div>
+                <div class="form-group">
+                    <label>Couleur</label>
+                    <input type="text" name="couleur" placeholder="Ex: Noir">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select name="type">
+                        <option value="">-- Choisir --</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Ville">Ville</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Enfant">Enfant</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Marque</label>
+                    <input type="text" name="marque" placeholder="Ex: Nike">
+                </div>
+                <div class="form-group">
+                    <label>Prix de base (F)</label>
+                    <input type="number" name="prix_de_base" required placeholder="Ex: 25000">
+                </div>
+                <div class="form-group">
+                    <label>Stock disponible</label>
+                    <input type="number" name="stock_dispo" required placeholder="Ex: 50">
+                </div>
+                <button type="submit" class="btn">Enregistrer l'article</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

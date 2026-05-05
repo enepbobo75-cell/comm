@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des ventes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white; padding: 15px 30px;
+            display: flex; align-items: center; gap: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .navbar strong { font-size: 1.2em; margin-right: 20px; }
+        .navbar a { color: #a0c4ff; text-decoration: none; font-size: 0.95em; }
+        .navbar a:hover { color: white; }
+        .container { padding: 30px; }
+        h1 { color: #1a1a2e; margin-bottom: 20px; }
+        .btn { background: #4361ee; color: white; padding: 10px 20px;
+               text-decoration: none; border-radius: 8px; font-size: 0.95em; }
+        .table-box { background: white; padding: 25px; border-radius: 12px;
+                     box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-top: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        th { background: #1a1a2e; color: white; padding: 12px; text-align: left; font-size: 0.85em; }
+        td { padding: 12px; border-bottom: 1px solid #f0f2f5; color: #333; font-size: 0.9em; }
+        tr:hover td { background: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        .badge { background: #e8f4fd; color: #4361ee; padding: 3px 8px;
+                 border-radius: 20px; font-size: 0.8em; font-weight: bold; }
+        .badge-type { background: #fff0e8; color: #ff6b6b; padding: 3px 8px;
+                      border-radius: 20px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <strong>🛒 Mon Commerce</strong>
+        <a href="/">📊 Tableau de bord</a>
+        <a href="/ventes">🧾 Ventes</a>
+        <a href="/articles">📦 Articles</a>
+        <a href="/nouvelle_vente">➕ Nouvelle vente</a>
+    </div>
+    <div class="container">
+        <h1>🧾 Liste des ventes</h1>
+        <a href="/nouvelle_vente" class="btn">➕ Nouvelle vente</a>
+        <div class="table-box">
+            <table>
+                <tr>
+                    <th>N° Vente</th>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Article</th>
+                    <th>Pointure</th>
+                    <th>Couleur</th>
+                    <th>Type</th>
+                    <th>Marque</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Sous-total</th>
+                </tr>
+                {% for v in ventes %}
+                <tr>
+                    <td>{{ v[0] }}</td>
+                    <td>{{ v[1] }}</td>
+                    <td>{{ v[2] }}</td>
+                    <td><strong>{{ v[3] }}</strong></td>
+                    <td>{{ v[4] }}</td>
+                    <td>{{ v[5] }}</td>
+                    <td><span class="badge-type">{{ v[6] }}</span></td>
+                    <td><span class="badge">{{ v[7] }}</span></td>
+                    <td>{{ v[8] }}</td>
+                    <td>{{ v[9] }} F</td>
+                    <td><strong>{{ v[10] }} F</strong></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
