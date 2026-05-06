@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from config import get_connection
+import datetime
 
 app = Flask(__name__)
 
@@ -26,7 +27,17 @@ def index():
     top_articles = cur.fetchall()
     cur.execute("SELECT * FROM ca_journalier LIMIT 7")
     ca_jours = cur.fetchall()
-    cur.execute("SELECT * FROM ca_mensuel LIMIT 6")
+    cur.execute("""
+        SELECT 
+            DATE_TRUNC('month', v.date_vente)::date AS mois,
+            SUM(c.quantite * c.prix_applique) AS chiffre_affaires,
+            COUNT(DISTINCT v.num_ventes) AS nombre_ventes
+        FROM ventes v
+        JOIN contenir c ON c.num_ventes = v.num_ventes
+        GROUP BY DATE_TRUNC('month', v.date_vente)::date
+        ORDER BY mois DESC
+        LIMIT 6
+    """)
     ca_mois_liste = cur.fetchall()
     cur.close()
     conn.close()
