@@ -7,8 +7,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; }
-
-        /* SIDEBAR */
         .sidebar {
             width: 220px; min-height: 100vh;
             background: linear-gradient(180deg, #1a1a2e, #16213e);
@@ -32,7 +30,6 @@
             display: flex; align-items: center; gap: 12px;
             padding: 14px 25px; color: #a0c4ff;
             text-decoration: none; font-size: 0.95em;
-            transition: all 0.2s;
         }
         .sidebar a:hover, .sidebar a.active {
             background: rgba(67,97,238,0.3);
@@ -41,20 +38,15 @@
         .sidebar .signout {
             margin-top: auto; padding: 20px 25px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            color: #ff6b6b; font-size: 0.9em; cursor: pointer;
+            color: #ff6b6b; font-size: 0.9em;
         }
-
-        /* MAIN */
         .main { margin-left: 220px; padding: 30px; width: calc(100% - 220px); }
-
         .topbar {
             display: flex; justify-content: space-between;
             align-items: center; margin-bottom: 25px;
         }
         .topbar h1 { color: #1a1a2e; font-size: 1.5em; }
         .topbar .date { color: #888; font-size: 0.9em; }
-
-        /* CARDS */
         .cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -77,8 +69,6 @@
         .card:nth-child(2) .value { color: #2ec4b6; }
         .card:nth-child(3) .value { color: #ff6b6b; }
         .card:nth-child(4) .value { color: #ffd166; }
-
-        /* CHARTS ROW */
         .charts-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -100,8 +90,6 @@
             margin-bottom: 20px; border-bottom: 1px solid #f0f2f5;
             padding-bottom: 10px;
         }
-
-        /* TABLE */
         .table-box {
             background: white; padding: 25px;
             border-radius: 12px;
@@ -113,20 +101,13 @@
             margin-bottom: 15px;
         }
         table { width: 100%; border-collapse: collapse; }
-        th { color: #888; font-size: 0.8em; text-align: left;
-             padding: 10px; border-bottom: 2px solid #f0f2f5; }
-        td { padding: 12px 10px; border-bottom: 1px solid #f0f2f5;
-             color: #333; font-size: 0.9em; }
+        th { color: #888; font-size: 0.8em; text-align: left; padding: 10px; border-bottom: 2px solid #f0f2f5; }
+        td { padding: 12px 10px; border-bottom: 1px solid #f0f2f5; color: #333; font-size: 0.9em; }
         tr:last-child td { border-bottom: none; }
-        .badge { background: #e8f4fd; color: #4361ee; padding: 3px 10px;
-                 border-radius: 20px; font-size: 0.8em; font-weight: bold; }
-        .stock-ok { color: #2ec4b6; font-weight: bold; }
-        .stock-low { color: #ffd166; font-weight: bold; }
-        .stock-empty { color: #ff6b6b; font-weight: bold; }
+        .badge { background: #e8f4fd; color: #4361ee; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="logo">
             <div>🛒</div>
@@ -141,14 +122,12 @@
         <div class="signout">🚪 Déconnexion</div>
     </div>
 
-    <!-- MAIN -->
     <div class="main">
         <div class="topbar">
             <h1>📊 Tableau de bord</h1>
             <span class="date">Bienvenue sur votre espace de gestion</span>
         </div>
 
-        <!-- CARTES -->
         <div class="cards">
             <div class="card">
                 <div class="icon">💰</div>
@@ -172,7 +151,6 @@
             </div>
         </div>
 
-        <!-- GRAPHIQUES LIGNE 1 -->
         <div class="charts-row">
             <div class="chart-box">
                 <h3>📈 Chiffre d'affaires des 7 derniers jours</h3>
@@ -184,7 +162,6 @@
             </div>
         </div>
 
-        <!-- GRAPHIQUES LIGNE 2 -->
         <div class="charts-row2">
             <div class="chart-box">
                 <h3>📅 CA mensuel (6 derniers mois)</h3>
@@ -237,7 +214,7 @@
         new Chart(document.getElementById('caMoisChart'), {
             type: 'line',
             data: {
-                labels: [{% for m in ca_mois_liste %}"{{ m[0].strftime('%b %Y') }}"{% if not loop.last %},{% endif %}{% endfor %}],
+                labels: [{% for m in ca_mois_liste %}"{{ m[0].strftime('%Y-%m') }}"{% if not loop.last %},{% endif %}{% endfor %}],
                 datasets: [{
                     label: 'CA (F)',
                     data: [{% for m in ca_mois_liste %}{{ m[1] }}{% if not loop.last %},{% endif %}{% endfor %}],
