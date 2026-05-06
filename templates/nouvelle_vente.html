@@ -4,29 +4,56 @@
     <meta charset="UTF-8">
     <title>Nouvelle vente</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
-        .navbar { background: #2c3e50; color: white; padding: 15px 30px; }
-        .navbar a { color: white; text-decoration: none; margin-right: 20px; }
-        .container { padding: 30px; max-width: 600px; }
-        h1 { color: #2c3e50; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; }
+        .sidebar {
+            width: 220px; min-height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e, #16213e);
+            color: white; padding: 20px 0;
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; height: 100%;
+        }
+        .sidebar .logo { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .sidebar .logo div { width: 50px; height: 50px; background: #4361ee; border-radius: 10px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; }
+        .sidebar a { display: flex; align-items: center; gap: 12px; padding: 14px 25px; color: #a0c4ff; text-decoration: none; font-size: 0.95em; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(67,97,238,0.3); color: white; border-left: 3px solid #4361ee; }
+        .main { margin-left: 220px; padding: 30px; width: calc(100% - 220px); }
+        h1 { color: #1a1a2e; margin-bottom: 25px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); max-width: 700px; }
         .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; color: #2c3e50; font-weight: bold; }
-        select, input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
-        .btn { background: #2c3e50; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; width: 100%; }
-        .btn:hover { background: #34495e; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { display: block; margin-bottom: 6px; color: #555; font-weight: bold; font-size: 0.9em; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95em; }
+        input:focus, select:focus { outline: none; border-color: #4361ee; }
+        .details-article {
+            background: #f8f9ff; border: 1px solid #e0e7ff;
+            border-radius: 8px; padding: 15px;
+            margin-bottom: 20px; display: none;
+        }
+        .details-article h4 { color: #4361ee; margin-bottom: 10px; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .detail-item { font-size: 0.9em; }
+        .detail-item span { color: #888; }
+        .detail-item strong { color: #1a1a2e; }
+        .btn { background: #4361ee; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn:hover { background: #3451d1; }
+        .prix-total { background: #e8f4fd; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 20px; font-size: 1.2em; color: #4361ee; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <strong>🛒 Mon Commerce</strong>
-        <a href="/">Tableau de bord</a>
-        <a href="/ventes">Ventes</a>
-        <a href="/articles">Articles</a>
-        <a href="/nouvelle_vente">Nouvelle vente</a>
+    <div class="sidebar">
+        <div class="logo">
+            <div>🛒</div>
+            <strong>Mon Commerce</strong>
+        </div>
+        <a href="/">📊 Tableau de bord</a>
+        <a href="/ventes">🧾 Ventes</a>
+        <a href="/articles">📦 Articles</a>
+        <a href="/nouvelle_vente" class="active">➕ Nouvelle vente</a>
+        <a href="/nouvel_article">📥 Nouvel article</a>
     </div>
-    <div class="container">
-        <h1>Nouvelle vente</h1>
+
+    <div class="main">
+        <h1>➕ Nouvelle vente</h1>
         <div class="card">
             <form method="POST">
                 <div class="form-group">
@@ -41,22 +68,96 @@
                     <label>Numéro du client</label>
                     <input type="text" name="numero_client" placeholder="Ex: 0701020304">
                 </div>
+
                 <div class="form-group">
                     <label>Article</label>
-                    <select name="num_art" required>
+                    <select name="num_art" id="articleSelect" onchange="afficherDetails()" required>
                         <option value="">-- Choisir un article --</option>
                         {% for a in articles %}
-                        <option value="{{ a[0] }}">{{ a[1] }} - {{ a[7] }} F (stock: {{ a[5] }})</option>
+                        <option value="{{ a[0] }}"
+                            data-nom="{{ a[1] }}"
+                            data-pointure="{{ a[2] }}"
+                            data-couleur="{{ a[3] }}"
+                            data-type="{{ a[4] }}"
+                            data-stock="{{ a[5] }}"
+                            data-marque="{{ a[6] }}"
+                            data-prix="{{ a[7] }}">
+                            {{ a[1] }} - {{ a[6] }} ({{ a[2] }}) - {{ a[7] }} F
+                        </option>
                         {% endfor %}
                     </select>
                 </div>
+
+                <!-- Détails de l'article -->
+                <div class="details-article" id="detailsArticle">
+                    <h4>📦 Détails de l'article</h4>
+                    <div class="details-grid">
+                        <div class="detail-item"><span>Nom : </span><strong id="d-nom"></strong></div>
+                        <div class="detail-item"><span>Marque : </span><strong id="d-marque"></strong></div>
+                        <div class="detail-item"><span>Pointure : </span><strong id="d-pointure"></strong></div>
+                        <div class="detail-item"><span>Couleur : </span><strong id="d-couleur"></strong></div>
+                        <div class="detail-item"><span>Type : </span><strong id="d-type"></strong></div>
+                        <div class="detail-item"><span>Stock dispo : </span><strong id="d-stock"></strong></div>
+                        <div class="detail-item"><span>Prix unitaire : </span><strong id="d-prix"></strong> F</div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Quantité</label>
-                    <input type="number" name="quantite" min="1" required placeholder="Ex: 2">
+                    <input type="number" name="quantite" id="quantite" min="1" required placeholder="Ex: 2" oninput="calculerTotal()">
                 </div>
-                <button type="submit" class="btn">Enregistrer la vente</button>
+
+                <div class="form-group">
+                    <label>Remise (%)</label>
+                    <input type="number" name="remise" id="remise" min="0" max="100" value="0" placeholder="Ex: 10" oninput="calculerTotal()">
+                </div>
+
+                <!-- Total calculé -->
+                <div class="prix-total" id="prixTotal">
+                    💰 Total à payer : <span id="totalValue">0</span> F
+                </div>
+
+                <button type="submit" class="btn">✅ Enregistrer la vente</button>
             </form>
         </div>
     </div>
+
+    <script>
+        function afficherDetails() {
+            const select = document.getElementById('articleSelect');
+            const option = select.options[select.selectedIndex];
+            
+            if (select.value === '') {
+                document.getElementById('detailsArticle').style.display = 'none';
+                document.getElementById('prixTotal').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('d-nom').textContent = option.dataset.nom;
+            document.getElementById('d-marque').textContent = option.dataset.marque;
+            document.getElementById('d-pointure').textContent = option.dataset.pointure;
+            document.getElementById('d-couleur').textContent = option.dataset.couleur;
+            document.getElementById('d-type').textContent = option.dataset.type;
+            document.getElementById('d-stock').textContent = option.dataset.stock;
+            document.getElementById('d-prix').textContent = option.dataset.prix;
+
+            document.getElementById('detailsArticle').style.display = 'block';
+            calculerTotal();
+        }
+
+        function calculerTotal() {
+            const select = document.getElementById('articleSelect');
+            const option = select.options[select.selectedIndex];
+            if (select.value === '') return;
+
+            const prix = parseFloat(option.dataset.prix) || 0;
+            const quantite = parseInt(document.getElementById('quantite').value) || 0;
+            const remise = parseFloat(document.getElementById('remise').value) || 0;
+
+            const total = prix * quantite * (1 - remise / 100);
+            document.getElementById('totalValue').textContent = total.toLocaleString('fr-FR');
+            document.getElementById('prixTotal').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
